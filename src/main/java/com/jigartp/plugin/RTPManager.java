@@ -89,6 +89,15 @@ public class RTPManager {
         }
     }
 
+    /**
+     * Admin-triggered instant RTP that bypasses the player's cooldown entirely (used by
+     * /jigartp &lt;player&gt;). Still records a fresh cooldown afterward so the target can't
+     * immediately chain a self-RTP on top of it.
+     */
+    public boolean forceRTP(Player target, World world) {
+        return attemptRTP(target, world);
+    }
+
     public boolean isWorldEnabled(World world) {
         return plugin.getWorldBounds().containsKey(world.getName());
     }

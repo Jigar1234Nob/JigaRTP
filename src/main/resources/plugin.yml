@@ -8,7 +8,7 @@ description: A simple random-teleport (RTP) plugin with per-world bounds, cooldo
 commands:
   jigartp:
     description: Randomly teleports you within the allowed bounds of your current world.
-    usage: /jigartp
+    usage: /jigartp [player|reload]
     permission: jigartp.use
     permission-message: You do not have permission to use this command.
 
@@ -21,4 +21,7 @@ permissions:
     default: op
   jigartp.reload:
     description: Allows reloading the JigaRTP config
+    default: op
+  jigartp.others:
+    description: Allows force-teleporting other players with /jigartp <player>
     default: op
