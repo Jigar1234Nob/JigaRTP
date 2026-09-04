@@ -1,0 +1,24 @@
+name: JigaRTP
+version: '1.0.0'
+main: com.jigartp.plugin.JigaRTP
+api-version: '26.1'
+author: You
+description: A simple random-teleport (RTP) plugin with per-world bounds, cooldown, and first-join RTP.
+
+commands:
+  jigartp:
+    description: Randomly teleports you within the allowed bounds of your current world.
+    usage: /jigartp
+    permission: jigartp.use
+    permission-message: You do not have permission to use this command.
+
+permissions:
+  jigartp.use:
+    description: Allows use of /jigartp
+    default: true
+  jigartp.bypass.cooldown:
+    description: Allows bypassing the RTP cooldown
+    default: op
+  jigartp.reload:
+    description: Allows reloading the JigaRTP config
+    default: op
