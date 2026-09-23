@@ -49,6 +49,7 @@ public class JigaRTPCommand implements CommandExecutor {
                 return true;
             }
 
+<<<<<<< HEAD
             // Admin force-RTP bypasses cooldown and skips the countdown — it's instant (subject
             // to the same async-safe location search as a normal RTP).
             plugin.getRtpManager().forceRTP(target, world, success -> {
@@ -58,6 +59,15 @@ public class JigaRTPCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Could not find a safe location for " + target.getName() + ". Please try again.");
                 }
             });
+=======
+            // Admin force-RTP bypasses cooldown and skips the countdown — it's instant.
+            boolean success = plugin.getRtpManager().forceRTP(target, world);
+            if (success) {
+                sender.sendMessage(ChatColor.GREEN + "Force-teleported " + target.getName() + ".");
+            } else {
+                sender.sendMessage(ChatColor.RED + "Could not find a safe location for " + target.getName() + ". Please try again.");
+            }
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
             return true;
         }
 

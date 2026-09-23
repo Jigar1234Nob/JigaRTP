@@ -19,11 +19,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+<<<<<<< HEAD
 import java.util.function.Consumer;
+=======
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
 
 /**
  * Core logic for JigaRTP: finding a safe random location within a world's configured bounds,
  * teleporting the player, and tracking per-player cooldowns.
+<<<<<<< HEAD
  *
  * IMPORTANT (TPS): candidate chunks are pre-loaded/generated via World#getChunkAtAsync before
  * anything reads blocks from them. Doing this synchronously (the naive approach) forces the
@@ -31,6 +35,8 @@ import java.util.function.Consumer;
  * getBlockAt on it, which is exactly what causes RTP plugins to spike/lag the whole server -
  * especially out near the edge of explored terrain where chunks aren't generated yet. Async
  * pre-loading moves that work off the main thread so the tick loop never stalls.
+=======
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
  */
 public class RTPManager {
 
@@ -89,6 +95,7 @@ public class RTPManager {
     }
 
     private void finishTeleport(Player player, World world) {
+<<<<<<< HEAD
         attemptRTP(player, world, success -> {
             if (!player.isOnline()) {
                 return;
@@ -99,6 +106,14 @@ public class RTPManager {
                 player.sendMessage(PREFIX + ChatColor.RED + "Could not find a safe location. Please try again.");
             }
         });
+=======
+        boolean success = attemptRTP(player, world);
+        if (success) {
+            player.sendMessage(PREFIX + ChatColor.GREEN + "You have been randomly teleported!");
+        } else {
+            player.sendMessage(PREFIX + ChatColor.RED + "Could not find a safe location. Please try again.");
+        }
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
     }
 
     /**
@@ -106,8 +121,13 @@ public class RTPManager {
      * /jigartp &lt;player&gt;). Still records a fresh cooldown afterward so the target can't
      * immediately chain a self-RTP on top of it.
      */
+<<<<<<< HEAD
     public void forceRTP(Player target, World world, Consumer<Boolean> callback) {
         attemptRTP(target, world, callback);
+=======
+    public boolean forceRTP(Player target, World world) {
+        return attemptRTP(target, world);
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
     }
 
     public boolean isWorldEnabled(World world) {
@@ -135,6 +155,7 @@ public class RTPManager {
     }
 
     /**
+<<<<<<< HEAD
      * Asynchronously finds a safe location and teleports the player. The callback fires on the
      * main thread with true on success, false if no safe location could be found within
      * max-attempts.
@@ -161,6 +182,26 @@ public class RTPManager {
             applyPostTeleportEffects(player, location);
             callback.accept(true);
         });
+=======
+     * Attempts to find a safe location and teleport the player instantly.
+     * Returns true if successful, false if no safe location could be found in time.
+     */
+    public boolean attemptRTP(Player player, World world) {
+        WorldBounds bounds = plugin.getWorldBounds().get(world.getName());
+        if (bounds == null) {
+            return false;
+        }
+
+        Location safeLocation = findSafeLocation(world, bounds);
+        if (safeLocation == null) {
+            return false;
+        }
+
+        player.teleport(safeLocation);
+        recordUse(player);
+        applyPostTeleportEffects(player, safeLocation);
+        return true;
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
     }
 
     /**
@@ -181,6 +222,7 @@ public class RTPManager {
         player.showTitle(title);
     }
 
+<<<<<<< HEAD
     /**
      * Recursively tries random X/Z coordinates within bounds. For each candidate, the chunk is
      * pre-loaded/generated asynchronously before any block data is read from it, so chunk
@@ -219,6 +261,31 @@ public class RTPManager {
                 findSafeLocation(world, bounds, attemptsLeft - 1, callback);
             }
         });
+=======
+    private Location findSafeLocation(World world, WorldBounds bounds) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+
+        for (int attempt = 0; attempt < plugin.getMaxAttempts(); attempt++) {
+            double x = random.nextDouble(bounds.getMinX(), bounds.getMaxX());
+            double z = random.nextDouble(bounds.getMinZ(), bounds.getMaxZ());
+
+            int highestY = world.getHighestBlockYAt((int) Math.floor(x), (int) Math.floor(z));
+
+            // Clamp the found ground height into the configured Y range.
+            if (highestY < bounds.getMinY() || highestY > bounds.getMaxY()) {
+                continue;
+            }
+
+            Location candidate = new Location(world, x, highestY + 1.0, z);
+            if (isSafe(candidate)) {
+                candidate.setX(Math.floor(x) + 0.5);
+                candidate.setZ(Math.floor(z) + 0.5);
+                return candidate;
+            }
+        }
+
+        return null;
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
     }
 
     private boolean isSafe(Location location) {

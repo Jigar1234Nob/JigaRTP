@@ -48,11 +48,18 @@ public class FirstJoinListener implements Listener {
             if (!player.isOnline()) {
                 return;
             }
+<<<<<<< HEAD
             plugin.getRtpManager().attemptRTP(player, targetWorld, success -> {
                 if (success && player.isOnline()) {
                     player.sendMessage(ChatColor.GREEN + "Welcome! You've been randomly teleported to get you started.");
                 }
             });
+=======
+            boolean success = plugin.getRtpManager().attemptRTP(player, targetWorld);
+            if (success) {
+                player.sendMessage(ChatColor.GREEN + "Welcome! You've been randomly teleported to get you started.");
+            }
+>>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
         }, 20L);
     }
 }
