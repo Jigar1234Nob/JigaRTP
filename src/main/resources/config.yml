@@ -1,0 +1,42 @@
+# JigaRTP Configuration
+#
+# cooldown-seconds: how long (in seconds) a player must wait between /jigartp uses.
+# first-join-rtp: if true, brand new players are automatically RTP'd on their very first join.
+# first-join-world: the world a first-time joiner gets RTP'd in. If "default-world" (below), uses whatever
+#                    world they spawn in normally.
+#
+# worlds:
+#   Each entry is a world that RTP is allowed in. Any world NOT listed here cannot be used with /jigartp.
+#   For each world you can set the bounding box that random locations will be picked from, centered
+#   however you like via min/max on each axis. Y min/max lets you restrict vertical range (e.g. avoid
+#   the void or bedrock ceiling). The plugin will search for a safe, solid-ground location within these
+#   bounds.
+
+cooldown-seconds: 30
+
+# How many seconds to count down (in chat) before actually teleporting the player.
+# Set to 0 for an instant teleport with no countdown/warning messages.
+countdown-seconds: 5
+
+first-join-rtp: true
+first-join-world: "default-world"
+
+max-attempts: 30
+
+worlds:
+  world:
+    enabled: true
+    min-x: -1000
+    max-x: 1000
+    min-y: 60
+    max-y: 200
+    min-z: -1000
+    max-z: 1000
+  world_nether:
+    enabled: false
+    min-x: -500
+    max-x: 500
+    min-y: 40
+    max-y: 120
+    min-z: -500
+    max-z: 500
