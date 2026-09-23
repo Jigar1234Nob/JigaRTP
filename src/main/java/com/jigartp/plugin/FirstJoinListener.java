@@ -24,7 +24,6 @@ public class FirstJoinListener implements Listener {
 
         Player player = event.getPlayer();
 
-        // hasPlayedBefore() is false only on a player's very first join to the server.
         if (player.hasPlayedBefore()) {
             return;
         }
@@ -43,23 +42,19 @@ public class FirstJoinListener implements Listener {
             return;
         }
 
-        // Run a tick later so the player has fully finished loading in before we teleport them.
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!player.isOnline()) {
                 return;
             }
-<<<<<<< HEAD
+
             plugin.getRtpManager().attemptRTP(player, targetWorld, success -> {
                 if (success && player.isOnline()) {
-                    player.sendMessage(ChatColor.GREEN + "Welcome! You've been randomly teleported to get you started.");
+                    player.sendMessage(
+                            ChatColor.GREEN +
+                            "Welcome! You've been randomly teleported to get you started."
+                    );
                 }
             });
-=======
-            boolean success = plugin.getRtpManager().attemptRTP(player, targetWorld);
-            if (success) {
-                player.sendMessage(ChatColor.GREEN + "Welcome! You've been randomly teleported to get you started.");
-            }
->>>>>>> 65f36955113ad1319943e3275bbe200d95f0b6a0
         }, 20L);
     }
 }
